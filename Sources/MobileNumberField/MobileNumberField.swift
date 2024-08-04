@@ -244,7 +244,9 @@ public struct MobileNumberField<Representation: View>: View {
                     }
                 }
             }
+            #if os(iOS)
             .listRowSeparator(.hidden)
+            #endif
         }
         
         @MainActor

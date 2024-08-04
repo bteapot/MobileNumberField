@@ -13,6 +13,7 @@ public struct MobileNumberField<Representation: View>: View {
     
     // MARK: - Инициализация
     
+    @MainActor
     public init(
         isValid: Binding<Bool>,
         phone: Binding<String>,

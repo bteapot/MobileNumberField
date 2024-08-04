@@ -197,16 +197,16 @@ public struct MobileNumberField<Representation: View>: View {
         
         var body: some View {
             VStack(alignment: .leading) {
-//                HStack {
-//                    Image(systemName: self.isValid ? "checkmark.circle.fill" : "xmark.circle.fill")
-//                        .foregroundStyle(self.isValid ? .green : .red)
-//                    
-//                    if let id = self.locale.region?.identifier, let title = self.locale.localizedString(forRegionCode: id) {
-//                        Text(title)
-//                    }
-//                }
-//                .padding(.top, 16)
-//                .padding(.horizontal, 4)
+                HStack {
+                    Image(systemName: self.isValid ? "checkmark.circle.fill" : "xmark.circle.fill")
+                        .foregroundStyle(self.isValid ? .green : .red)
+                    
+                    if let id = self.locale.region?.identifier, let title = self.locale.localizedString(forRegionCode: id) {
+                        Text(title)
+                    }
+                }
+                .padding(.top, 16)
+                .padding(.horizontal, 4)
 
                 MobileNumberField(
                     isValid: self.$isValid,
@@ -216,15 +216,15 @@ public struct MobileNumberField<Representation: View>: View {
                     NSLog("phone: [\(self.phone)]")
                 }
                 
-//                ScrollView(.horizontal) {
-//                    HStack(spacing: 16) {
-//                        self.button(id: "RU", number: "+7 (916) 124-62-68")
-//                        self.button(id: "KZ", number: "+7 (716) 124-62-68")
-//                        self.button(id: "JP", number: "+81 (22)1234-5678")
-//                        self.button(id: "MM", number: "+95 12-345-678")
-//                        self.button(id: "NZ", number: "+64 (123)4567-8901")
-//                    }
-//                }
+                ScrollView(.horizontal) {
+                    HStack(spacing: 16) {
+                        self.button(id: "RU", number: "+7 (916) 124-62-68")
+                        self.button(id: "KZ", number: "+7 (716) 124-62-68")
+                        self.button(id: "JP", number: "+81 (22)1234-5678")
+                        self.button(id: "MM", number: "+95 12-345-678")
+                        self.button(id: "NZ", number: "+64 (123)4567-8901")
+                    }
+                }
             }
             .listRowSeparator(.hidden)
         }

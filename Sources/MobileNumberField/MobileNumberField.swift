@@ -59,6 +59,9 @@ public struct MobileNumberField<Representation: View>: View {
     @State
     private var number: String = ""
     
+    @State
+    private var changeIsInternal: Bool = false
+    
     // MARK: - Тело
     
     public var body: some View {
@@ -111,8 +114,17 @@ public struct MobileNumberField<Representation: View>: View {
         }
         
         // фильтруем пользовательский ввод
-        .onChange(of: self.number) {
-            self.process(phone: self.country.code + self.number)
+        .onChange(of: self.number) { old, new in
+            if self.changeIsInternal {
+                // это мы сами поменяли, не реагируем
+                self.changeIsInternal = false
+            } else if abs(new.count - old.count) == 1 {
+                // это один символ с клавиатуры
+                self.process(phone: self.country.code + self.number)
+            } else {
+                // это подстановка номера
+                self.process(phone: self.number)
+            }
         }
     }
     
@@ -165,6 +177,11 @@ public struct MobileNumberField<Representation: View>: View {
         
         // поставим выбранную маску и номер
         self.mask = mask
+        
+        if phone != self.number {
+            self.changeIsInternal = true
+        }
+        
         self.number = phone
         
         // отдадим признак валидности

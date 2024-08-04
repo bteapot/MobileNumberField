@@ -39,9 +39,6 @@ public struct DefaultRepresentation: View {
     @State
     private var search: String = ""
     
-    @State
-    private var isSearchActive: Bool = false
-    
     #if os(watchOS)
     private let fontSize: CGFloat = 12
     #else
@@ -133,14 +130,7 @@ public struct DefaultRepresentation: View {
             
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
-            .searchable(
-                text: self.$search,
-                isPresented: self.$isSearchActive,
-                placement: .navigationBarDrawer(displayMode: .always)
-            )
-            .onAppear {
-                self.isSearchActive = true
-            }
+            .searchable(text: self.$search, placement: .navigationBarDrawer(displayMode: .always))
             #endif
         }
         .onChange(of: self.country) {

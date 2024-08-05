@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 
+@MainActor
 public struct MobileNumberField<Representation: View>: View {
     
     // MARK: - Инициализация
@@ -201,6 +202,7 @@ public struct MobileNumberField<Representation: View>: View {
 // MARK: - Превьюха
 
 #Preview {
+    @MainActor
     struct ExampleView: View {
         
         @State

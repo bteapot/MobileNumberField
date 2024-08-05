@@ -1,7 +1,7 @@
 # MobileNumberField
 SwiftUI mobile phone number input field.
 
-| ![1](https://github.com/bteapot/MobileNumberField/blob/afbb3b19f837ca0276cdda2fe47639734cf1b7d2/Meta/1.png) | ![2](https://github.com/bteapot/MobileNumberField/blob/afbb3b19f837ca0276cdda2fe47639734cf1b7d2/Meta/2.png) | ![3](https://github.com/bteapot/MobileNumberField/blob/afbb3b19f837ca0276cdda2fe47639734cf1b7d2/Meta/3.png) | ![4](https://github.com/bteapot/MobileNumberField/blob/afbb3b19f837ca0276cdda2fe47639734cf1b7d2/Meta/4.png) |
+| <img src="https://github.com/user-attachments/assets/a4efac9c-30ee-4fae-b836-b172f3b84edf" width="292"> | <img src="https://github.com/user-attachments/assets/cd8832c8-ba7d-424f-8fda-ff1e24292492" width="385"> | <img src="https://github.com/user-attachments/assets/35f332aa-cd03-4f7b-91fb-acf7047b6c13" width="373"> | <img src="https://github.com/user-attachments/assets/fc41b3b7-ec0e-4b4a-899f-b11642f4c3fd" width="374"> |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 
 ## Usage

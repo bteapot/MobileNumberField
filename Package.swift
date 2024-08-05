@@ -20,7 +20,10 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "MobileNumberField"
+            name: "MobileNumberField",
+            swiftSettings: [
+                .enableExperimentalFeature("StrictConcurrency")
+            ]
         ),
         .testTarget(
             name: "MobileNumberFieldTests",

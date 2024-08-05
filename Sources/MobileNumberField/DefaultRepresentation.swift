@@ -8,6 +8,7 @@
 import SwiftUI
 
 
+@MainActor
 public struct DefaultRepresentation: View {
     
     // MARK: - Инициализация
@@ -30,6 +31,9 @@ public struct DefaultRepresentation: View {
     
     @Environment(\.locale)
     private var locale
+    
+    @Environment(\.isEnabled)
+    private var isEnabled
     
     // MARK: - Свойства
     
@@ -58,6 +62,7 @@ public struct DefaultRepresentation: View {
             // номер
             Text(self.string(for: self.number, mask: self.mask))
                 .padding(EdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 8))
+                .opacity(self.isEnabled ? 1 : 0.5)
         }
         .fixedSize()
         .background(
@@ -72,7 +77,6 @@ public struct DefaultRepresentation: View {
     
     // MARK: - Сабвьюхи
     
-    @MainActor
     @ViewBuilder
     private var codeView: some View {
         Button(
@@ -98,7 +102,6 @@ public struct DefaultRepresentation: View {
         }
     }
     
-    @MainActor
     @ViewBuilder
     private var countrySelector: some View {
         NavigationStack {
@@ -224,7 +227,7 @@ public struct DefaultRepresentation: View {
                 
                 return
                     country.name.lowercased().contains(normalized) ||
-                    country.code.lowercased().contains(normalized) ||
+                    country.id.lowercased().contains(normalized) ||
                     ("+" + country.code).contains(normalized)
             }
             .sorted(by: { $0.name < $1.name })

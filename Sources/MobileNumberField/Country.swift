@@ -37,7 +37,6 @@ public struct Country: Sendable, Hashable {
 // MARK: - Страна по-умолчанию
 
 extension Country {
-    @MainActor
     public static var `default`: Self =
         Self.countries(with: .current)
             .first(where: { $0.id == Locale.current.language.languageCode?.identifier })

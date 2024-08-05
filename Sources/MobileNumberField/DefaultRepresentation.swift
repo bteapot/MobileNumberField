@@ -117,7 +117,7 @@ public struct DefaultRepresentation: View {
                     }
                 }
                 .onAppear {
-                    Task {
+                    Task { @MainActor in
                         proxy.scrollTo(self.country, anchor: .center)
                     }
                 }

@@ -13,7 +13,6 @@ public struct MobileNumberField<Representation: View>: View {
     
     // MARK: - Инициализация
     
-    @MainActor
     public init(
         isValid: Binding<Bool>,
         phone: Binding<String>,
@@ -249,7 +248,6 @@ public struct MobileNumberField<Representation: View>: View {
             #endif
         }
         
-        @MainActor
         @ViewBuilder
         private func button(id: String, number: String) -> some View {
             Button((Country.countries(with: self.locale).first(where: { $0.id == id }) ?? .default).flag) {

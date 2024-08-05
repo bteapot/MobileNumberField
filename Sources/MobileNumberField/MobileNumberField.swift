@@ -120,10 +120,10 @@ public struct MobileNumberField<Representation: View>: View {
                 self.changeIsInternal = false
             } else if abs(new.count - old.count) == 1 {
                 // это один символ с клавиатуры
-                self.process(phone: self.country.code + self.number)
+                self.process(phone: self.country.code + new)
             } else {
                 // это подстановка номера
-                self.process(phone: self.number)
+                self.process(phone: new)
             }
         }
     }

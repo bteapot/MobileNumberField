@@ -91,7 +91,6 @@ public struct DefaultRepresentation: View {
                     // код страны
                     Text(self.string(for: "", mask: self.country.code))
                 }
-                .font(.system(size: self.fontSize, weight: .medium).monospacedDigit())
             }
         )
         .buttonStyle(.plain)
@@ -161,7 +160,7 @@ public struct DefaultRepresentation: View {
             switch m {
                 case "0"..."9":
                     attributes[ac] = .primary
-                    attributes[af] = .system(size: self.fontSize, weight: .medium, design: .monospaced)
+                    attributes[af] = .digits(size: self.fontSize)
                     
                     if number.isEmpty == false {
                         c = number.removeFirst()
@@ -170,13 +169,13 @@ public struct DefaultRepresentation: View {
                     }
                     
                 case "#":
-                    attributes[af] = .system(size: self.fontSize, weight: .medium, design: .monospaced)
-                    
                     if number.isEmpty == false {
                         attributes[ac] = .primary
+                        attributes[af] = .digits(size: self.fontSize)
                         c = number.removeFirst()
                     } else {
                         attributes[ac] = .secondary.opacity(0.25)
+                        attributes[af] = .system(size: self.fontSize, weight: .medium, design: .monospaced)
                         c = "•"
                     }
                     
@@ -252,6 +251,43 @@ extension Binding {
     }
 }
 
+private extension Font {
+    static func digits(size: CGFloat) -> Font {
+        guard let font = CTFontCreateUIFontForLanguage(.system, size, nil) else {
+            return .system(size: size, weight: .medium, design: .monospaced)
+        }
+
+        let fontFeatureSettings: [CFDictionary] = [
+            [   // моноширинный
+                kCTFontFeatureTypeIdentifierKey:     kNumberSpacingType,
+                kCTFontFeatureSelectorIdentifierKey: kMonospacedNumbersSelector
+            ] as CFDictionary,
+            
+            [   // ноль без палочки
+                kCTFontFeatureTypeIdentifierKey:     kStylisticAlternativesType,
+                kCTFontFeatureSelectorIdentifierKey: kStylisticAltThreeOnSelector
+            ] as CFDictionary,
+            
+            [   // единица без основания
+                kCTFontFeatureTypeIdentifierKey:     kStylisticAlternativesType,
+                kCTFontFeatureSelectorIdentifierKey: kStylisticAltFourOnSelector
+            ] as CFDictionary,
+        ]
+        
+        let fontTraits = [
+            kCTFontWeightTrait: 0.2, // medium
+        ] as CFDictionary
+        
+        let fontDescriptor = CTFontDescriptorCreateWithAttributes([
+            kCTFontFeatureSettingsAttribute: fontFeatureSettings,
+            kCTFontTraitsAttribute:          fontTraits,
+        ] as CFDictionary)
+        
+        let fontWithFeatures = CTFontCreateCopyWithAttributes(font, size, nil, fontDescriptor)
+
+        return Font(fontWithFeatures)
+    }
+}
 
 #if os(macOS)
 import AppKit

@@ -105,13 +105,13 @@ public struct MobileNumberField<Representation: View>: View {
         .onChange(of: self.phoneBinding, initial: true) {
             // не эхо?
             if self.phoneBinding != self.country.code + self.number {
-                self.process(phone: self.phoneBinding)
+                self.process(phone: self.phoneBinding, locked: false)
             }
         }
         
         // изменение страны
         .onChange(of: self.country) {
-            self.process(phone: self.country.code + self.number)
+            self.process(phone: self.country.code + self.number, locked: true)
         }
         
         // фильтруем пользовательский ввод
@@ -121,45 +121,49 @@ public struct MobileNumberField<Representation: View>: View {
                 self.changeIsInternal = false
             } else if abs(new.count - old.count) == 1 {
                 // это один символ с клавиатуры
-                self.process(phone: self.country.code + new)
+                self.process(phone: self.country.code + new, locked: false)
             } else {
                 // это подстановка номера
-                self.process(phone: new)
+                self.process(phone: new, locked: false)
             }
         }
     }
     
     // MARK: - Инструменты
     
-    private func process(phone: String) {
+    private func process(phone: String, locked: Bool) {
         // оставим только цифры
         var phone = phone.digits
         
-        // найдём максимальное совпадение
         var country: Country = self.country
-        var score: Int = 0
         
-        for c in Country.countries(with: self.locale) {
-            // попадание, и с лучшим результатом?
-            if let s = c.score(for: phone) {
-                // явно лучше?
-                if s > score {
-                    country = c
-                    score = s
-                } else
-                
-                // одинаково?
-                if s == score {
-                    // менее рестриктивный?
-                    if c.masks.map(\.digits.count).min() ?? 0 < country.masks.map(\.digits.count).min() ?? 0 {
+        // надо определить страну?
+        if locked == false {
+            // найдём максимальное совпадение
+            var score: Int = country.score(for: phone) ?? 0
+            
+            for c in Country.countries(with: self.locale) {
+                // попадание, и с лучшим результатом?
+                if let s = c.score(for: phone) {
+                    // явно лучше?
+                    if s > score {
                         country = c
+                        score = s
+                    } else
+                    
+                    // одинаково?
+                    if s == score {
+                        // менее рестриктивный?
+                        if c.masks.map(\.digits.count).min() ?? 0 < country.masks.map(\.digits.count).min() ?? 0 {
+                            country = c
+                        }
                     }
                 }
             }
+            
+            // запомним выбранную страну
+            self.country = country
         }
-        
-        // запомним выбранную страну
-        self.country = country
         
         // откусим код страны
         phone.trimPrefix(country.code.digits)

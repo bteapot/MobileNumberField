@@ -85,6 +85,20 @@ public struct MobileNumberField<Representation: View>: View {
                     // поднимаем клавиатуру по тапу
                     self.focus = 1
                 }
+                
+                // вставка текста
+                #if os(iOS)
+                .contextMenu {
+                    // в буфере – строка?
+                    let string = UIPasteboard.general.string
+                    
+                    if let string {
+                        Button("Вставить") {
+                            self.process(phone: string, locked: false)
+                        }
+                    }
+                }
+                #endif
         }
         
         .onAppear {

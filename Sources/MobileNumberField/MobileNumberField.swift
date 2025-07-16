@@ -63,6 +63,14 @@ public struct MobileNumberField<Representation: View>: View {
     @State
     private var changeIsInternal: Bool = false
     
+    #if os(iOS)
+    @Environment(\.scenePhase)
+    private var scenePhase
+    
+    @State
+    private var isPasteEnabled: Bool = UIPasteboard.general.hasStrings
+    #endif
+    
     // MARK: - Тело
     
     public var body: some View {
@@ -89,14 +97,24 @@ public struct MobileNumberField<Representation: View>: View {
                 // вставка текста
                 #if os(iOS)
                 .contextMenu {
-                    // в буфере – строка?
-                    let string = UIPasteboard.general.string
-                    
-                    if let string {
-                        Button("Вставить") {
+                    Button("Вставить") {
+                        // в буфере – строка?
+                        if let string = UIPasteboard.general.strings?.first {
                             self.process(phone: string, locked: false)
                         }
                     }
+                    .disabled(self.isPasteEnabled == false)
+                }
+                .onChange(of: self.scenePhase) {
+                    if self.scenePhase == .active {
+                        self.isPasteEnabled = UIPasteboard.general.hasStrings
+                    }
+                }
+                .onAppear {
+                    self.isPasteEnabled = UIPasteboard.general.hasStrings
+                }
+                .onReceive(NotificationCenter.default.publisher(for: UIPasteboard.changedNotification)) { v in
+                    self.isPasteEnabled = UIPasteboard.general.hasStrings
                 }
                 #endif
         }
